@@ -80,10 +80,6 @@ method = th_buildin_method()
 trans = dict(keyword.keyword, **method.keyword) # ตัวแปรสำหรับรวมคำสั่ง
 
 import tokenize
-import re
-regex = re.compile('[\u0E31|\u0E4A|\u0E35|\u0E33|\u0E49|\u0E48|\u0E37]',re.U)
-
-
 def translate_code(readline, translations):
 	for type, name, _,_,_ in tokenize.generate_tokens(readline):
 		#name=re.sub(regex,'',name)
