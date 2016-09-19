@@ -86,21 +86,15 @@ trans = dict(keyword.keyword, **method.keyword) # ตัวแปรสำหร
 pattern = '[\u0E31|\u0E4A|\u0E35|\u0E33|\u0E49|\u0E48|\u0E37]' # ตัวแปรสำหรับไว้เก็บตัวกรอก ่ , ุ ออกจากไฟล์โค้ด
 def translate_code(readline, translations):
 	for type, name, _,_,_ in tokenize.generate_tokens(readline):
-		#name=re.sub(regex,'',name)
-		#print(name,type == tokenize.NAME)
 		if type == tokenize.NAME and name in translations:
-			#print("\ntype")
-			#print(tokenize.NAME, translations[name])
 			yield tokenize.NAME, translations[name]
 		else:
-			#print("else")
-			#print(type, name)
 			yield type, name
 translations = trans
 def commandline():
     """thaipy, the python language in Traditional Thai
 
-    usage: thaipy file.twpy
+    usage: thaipy file.thpy
     """
     if len(sys.argv) != 2:
         print(commandline.__doc__)
@@ -109,20 +103,20 @@ def commandline():
     file_path = sys.argv[1]
 
     if not os.path.exists(file_path):
-        print("thaipy: file '%s' does not exists" % file_path)
+        print("thaipy: file '%s' does not exists" % file_path) # ไม่พบไฟล์ แจ้งเตือน
         sys.exit(1)
-    sys.path[0] = os.path.dirname(os.path.join(os.getcwd(), file_path))
-    file=io.StringIO(open(file_path,'r',encoding='utf-8').read())
-    file2=re.sub(pattern,'',file.read())
-    file.close()
-    file=io.StringIO(file2)
+    sys.path[0] = os.path.dirname(os.path.join(os.getcwd(), file_path)) # ดึงที่ตั้งของไฟล์
+    file=io.StringIO(open(file_path,'r',encoding='utf-8').read()) # โหลดไฟล์เข้าหน่วยความจำ
+    file2=re.sub(pattern,'',file.read()) # ลบ ้ ุ พวกนี้ออก
+    file.close() # ปิดเพื่อคืนความจำ
+    file=io.StringIO(file2) # โหลดเข้าใหม่
     del file2
-    openfile = list(translate_code(file.readline, translations))
+    openfile = list(translate_code(file.readline, translations)) # ทำการแปลโค้ดด้วย Tokenizer จับคู่กับ dict ในตัวแปร translations
     file.close()
     source = tokenize.untokenize(openfile)
-    code = compile(source, file_path, "exec")
+    code = compile(source, file_path, "exec") # คอมไพล์โค้ด
     del openfile,source,file
-    runpy._run_module_code(code, mod_name="__main__")
+    runpy._run_module_code(code, mod_name="__main__") # รันโค้ด
 
 if __name__=="__main__":
     commandline()
