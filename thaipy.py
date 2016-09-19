@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
+#   Apache License Version 2.0
+# เขียนโดย วรรณพงษ์  ภัททิยไพบูลย์
 import re
 import runpy
 import sys
@@ -32,7 +34,7 @@ class th_keyword(ThpyPlugin):
           u"จริง": "True",
           u"เท็จ":"False",
           # def
-          u"ฟังก์ชน":"def",
+          u"ฟังก์ชัน":"def",
           u"ชั้น":"class",
           u"คลาส":"class",
           # import
@@ -47,7 +49,7 @@ class th_keyword(ThpyPlugin):
           u"หากว่า":"elif",
           u"อื่น":"else",
           # for loop
-          u"สำหรบ":"for",
+          u"สำหรับ":"for",
           u"ใน":"in",
           # while loop
           u"ขณะ":"while",
