@@ -1,5 +1,11 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
+import re
+import tokenize
+import runpy
+import sys
+import os
+import io
 class ThpyPlugin(object):
     """
     basic plugin class
@@ -14,38 +20,36 @@ def revert_dict(lang_dict):
     """
     return dict ( (v,k) for k, v in lang_dict.items() )
 
-# Simplized chinese keywords
+# Simplized thai keywords
 class th_keyword(ThpyPlugin):
     """
-    python cn keyword
+    python th keyword
     """
     title = "คำสำคัญ"
     description = "Python คีย์เวิดร์"
     keyword = {
           # logic
           u"และ":"and",
-          u"หรือ":"or",
-          u"จริง": "True",
-          u"เท็จ":"False",
-          u"ว่าง":"None",
+          u"หรอ":"or",
+          u"จรง": "True",
+          u"เทจ":"False",
           # def
-          u"ฟังก์ชัน":"def",
-          u"ฟังก์ชั่น":"def",
-          u"ชั้น":"class",
+          u"ฟงกชน":"def",
+          u"ชน":"class",
           u"คลาส":"class",
           # import
           u"จาก":"from",
-          u"เรียก":"import",
-          u"เป็น":"as",
+          u"เรยก":"import",
+          u"เปน":"as",
           # flow
-          u"คืนค่า":"return",
-          u"ว่าง":"pass",
+          u"คนคา":"return",
+          u"วาง":"pass",
           # control
           u"หาก":"if",
-          u"หากว่า":"elif",
-          u"อื่น":"else",
+          u"หากวา":"elif",
+          u"อน":"else",
           # for loop
-          u"สำหรับ":"for",
+          u"สหรบ":"for",
           u"ใน":"in",
           # while loop
           u"ขณะ":"while",
@@ -54,7 +58,7 @@ class th_keyword(ThpyPlugin):
 
 class th_buildin_method(ThpyPlugin):
     """
-    python cn methods
+    python th methods
     """
     title = "methods"
     description = "Python methods"
@@ -62,16 +66,16 @@ class th_buildin_method(ThpyPlugin):
           u"กรอก":"input",
           u"รบ":"input",
           # build-in types
-          u"ข้อความ":"str",
+          u"ขอความ":"str",
           u"รายการ": "list",
           # number methods
-          u"ตัวเลข":"int",
-          u"จำนวนจริง":"float",
+          u"ตวเลข":"int",
+          u"จนวนจรง":"float",
           # build in functions
           u"ความยาว":"len",
-          u"ช่วง":"range",
-          u"ชนิด":"type",
-          u"ช่วย":"help",
+          u"ชวง":"range",
+          u"ชนด":"type",
+          u"ชวย":"help",
           u"เอกสาร":"help",
           }
 
@@ -80,7 +84,6 @@ method = th_buildin_method()
 
 trans = dict(keyword.keyword, **method.keyword) # ตัวแปรสำหรับรวมคำสั่ง
 pattern = '[\u0E31|\u0E4A|\u0E35|\u0E33|\u0E49|\u0E48|\u0E37]' # ตัวแปรสำหรับไว้เก็บตัวกรอก ่ , ุ ออกจากไฟล์โค้ด
-import tokenize,re
 def translate_code(readline, translations):
 	for type, name, _,_,_ in tokenize.generate_tokens(readline):
 		#name=re.sub(regex,'',name)
@@ -94,11 +97,6 @@ def translate_code(readline, translations):
 			#print(type, name)
 			yield type, name
 translations = trans
-import runpy
-import sys
-import os
-import tokenize 
-import io
 def commandline():
     """thaipy, the python language in Traditional Thai
 
@@ -123,7 +121,7 @@ def commandline():
     file.close()
     source = tokenize.untokenize(openfile)
     code = compile(source, file_path, "exec")
-
+    del openfile,source,file
     runpy._run_module_code(code, mod_name="__main__")
 
 if __name__=="__main__":
