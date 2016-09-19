@@ -33,6 +33,10 @@ class th_keyword(ThpyPlugin):
           u"หรือ":"or",
           u"จริง": "True",
           u"เท็จ":"False",
+          u"คือ":"is",
+          u"เป็น":"is",
+          u"ไม่":"not",
+          u"ไม่เป็น":"is not",
           # def
           u"ฟังก์ชัน":"def",
           u"ชั้น":"class",
@@ -40,7 +44,6 @@ class th_keyword(ThpyPlugin):
           # import
           u"จาก":"from",
           u"เรียก":"import",
-          u"เป็น":"as",
           # flow
           u"คืนค่า":"return",
           u"ว่าง":"pass",
@@ -63,6 +66,7 @@ class th_buildin_method(ThpyPlugin):
     title = "methods"
     description = "Python methods"
     keyword = {
+          u"นี่":"this",
           u"กรอก":"input",
           u"รับ":"input",
           # build-in types
