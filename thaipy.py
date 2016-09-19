@@ -60,6 +60,7 @@ class th_buildin_method(ThpyPlugin):
     description = "Python methods"
     keyword = {
           u"กรอก":"input",
+          u"รบ":"input",
           # build-in types
           u"ข้อความ":"str",
           u"รายการ": "list",
@@ -78,8 +79,8 @@ keyword = th_keyword()
 method = th_buildin_method()
 
 trans = dict(keyword.keyword, **method.keyword) # ตัวแปรสำหรับรวมคำสั่ง
-
-import tokenize
+pattern = '[\u0E31|\u0E4A|\u0E35|\u0E33|\u0E49|\u0E48|\u0E37]' # ตัวแปรสำหรับไว้เก็บตัวกรอก ่ , ุ ออกจากไฟล์โค้ด
+import tokenize,re
 def translate_code(readline, translations):
 	for type, name, _,_,_ in tokenize.generate_tokens(readline):
 		#name=re.sub(regex,'',name)
@@ -97,6 +98,7 @@ import runpy
 import sys
 import os
 import tokenize 
+import io
 def commandline():
     """thaipy, the python language in Traditional Thai
 
@@ -112,7 +114,13 @@ def commandline():
         print("thaipy: file '%s' does not exists" % file_path)
         sys.exit(1)
     sys.path[0] = os.path.dirname(os.path.join(os.getcwd(), file_path))
-    openfile = list(translate_code(open(file_path,'r',encoding='utf-8').readline, translations))
+    file=io.StringIO(open(file_path,'r',encoding='utf-8').read())
+    file2=re.sub(pattern,'',file.read())
+    file.close()
+    file=io.StringIO(file2)
+    del file2
+    openfile = list(translate_code(file.readline, translations))
+    file.close()
     source = tokenize.untokenize(openfile)
     code = compile(source, file_path, "exec")
 
