@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 import re
-import tokenize
 import runpy
 import sys
 import os
@@ -12,13 +11,12 @@ class ThpyPlugin(object):
     """
     pass
 
+def multiple_replace(dict, text):
+  # Create a regular expression  from the dictionary keys
+  regex = re.compile("(%s)" % "|".join(map(re.escape, dict.keys())))
 
-def revert_dict(lang_dict):
-    """make a reverse dictionary from the input dictionary
-    >>> revert_dict({'a':'1', 'b':'2'})
-    {'1': 'a', '2': 'b'}
-    """
-    return dict ( (v,k) for k, v in lang_dict.items() )
+  # For each match, look-up corresponding value in dictionary
+  return regex.sub(lambda mo: dict[mo.string[mo.start():mo.end()]], text)
 
 # Simplized thai keywords
 class th_keyword(ThpyPlugin):
@@ -30,26 +28,26 @@ class th_keyword(ThpyPlugin):
     keyword = {
           # logic
           u"และ":"and",
-          u"หรอ":"or",
-          u"จรง": "True",
-          u"เทจ":"False",
+          u"หรือ":"or",
+          u"จริง": "True",
+          u"เท็จ":"False",
           # def
-          u"ฟงกชน":"def",
-          u"ชน":"class",
+          u"ฟังก์ชน":"def",
+          u"ชั้น":"class",
           u"คลาส":"class",
           # import
           u"จาก":"from",
-          u"เรยก":"import",
-          u"เปน":"as",
+          u"เรียก":"import",
+          u"เป็น":"as",
           # flow
-          u"คนคา":"return",
-          u"วาง":"pass",
+          u"คืนค่า":"return",
+          u"ว่าง":"pass",
           # control
           u"หาก":"if",
-          u"หากวา":"elif",
-          u"อน":"else",
+          u"หากว่า":"elif",
+          u"อื่น":"else",
           # for loop
-          u"สหรบ":"for",
+          u"สำหรบ":"for",
           u"ใน":"in",
           # while loop
           u"ขณะ":"while",
@@ -64,18 +62,18 @@ class th_buildin_method(ThpyPlugin):
     description = "Python methods"
     keyword = {
           u"กรอก":"input",
-          u"รบ":"input",
+          u"รับ":"input",
           # build-in types
-          u"ขอความ":"str",
+          u"ข้อความ":"str",
           u"รายการ": "list",
           # number methods
-          u"ตวเลข":"int",
-          u"จนวนจรง":"float",
+          u"ตัวเลข":"int",
+          u"จำนวนจริง":"float",
           # build in functions
           u"ความยาว":"len",
-          u"ชวง":"range",
-          u"ชนด":"type",
-          u"ชวย":"help",
+          u"ช่วง":"range",
+          u"ชนิด":"type",
+          u"ช่วย":"help",
           u"เอกสาร":"help",
           }
 
@@ -83,13 +81,6 @@ keyword = th_keyword()
 method = th_buildin_method()
 
 trans = dict(keyword.keyword, **method.keyword) # ตัวแปรสำหรับรวมคำสั่ง
-pattern = '[\u0E31|\u0E4A|\u0E35|\u0E33|\u0E49|\u0E48|\u0E37]' # ตัวแปรสำหรับไว้เก็บตัวกรอก ่ , ุ ออกจากไฟล์โค้ด
-def translate_code(readline, translations):
-	for type, name, _,_,_ in tokenize.generate_tokens(readline):
-		if type == tokenize.NAME and name in translations:
-			yield tokenize.NAME, translations[name]
-		else:
-			yield type, name
 translations = trans
 def commandline():
     """thaipy, the python language in Traditional Thai
@@ -107,16 +98,11 @@ def commandline():
         sys.exit(1)
     sys.path[0] = os.path.dirname(os.path.join(os.getcwd(), file_path)) # ดึงที่ตั้งของไฟล์
     file=io.StringIO(open(file_path,'r',encoding='utf-8').read()) # โหลดไฟล์เข้าหน่วยความจำ
-    file2=re.sub(pattern,'',file.read()) # ลบ ้ ุ พวกนี้ออก
+    file2=multiple_replace(translations,file.read()) # แทนที่คำสั่ง
     file.close() # ปิดเพื่อคืนความจำ
     file=io.StringIO(file2) # โหลดเข้าใหม่
     del file2
-    openfile = list(translate_code(file.readline, translations)) # ทำการแปลโค้ดด้วย Tokenizer จับคู่กับ dict ในตัวแปร translations
-    file.close()
-    source = tokenize.untokenize(openfile)
-    code = compile(source, file_path, "exec") # คอมไพล์โค้ด
-    del openfile,source,file
-    runpy._run_module_code(code, mod_name="__main__") # รันโค้ด
+    runpy._run_module_code(file.read(), mod_name="__main__") # รันโค้ด
 
 if __name__=="__main__":
     commandline()
