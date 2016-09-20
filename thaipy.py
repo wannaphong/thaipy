@@ -14,11 +14,11 @@ class ThpyPlugin(object):
     pass
 
 def multiple_replace(dict, text):
-	# Create a regular expression  from the dictionary keys
-	regex = re.compile('((^["]*$)%s(^["]*$))' % "|".join(map(re.escape, dict.keys())))
-	#print(regex)
-	# For each match, look-up corresponding value in dictionary
-	return regex.sub(lambda mo: dict[mo.string[mo.start():mo.end()]], text)
+  # Create a regular expression  from the dictionary keys
+  regex = re.compile("(%s)" % "|".join(map(re.escape, dict.keys())))
+
+  # For each match, look-up corresponding value in dictionary
+  return regex.sub(lambda mo: dict[mo.string[mo.start():mo.end()]], text)
 
 # Simplized thai keywords
 class th_keyword(ThpyPlugin):
@@ -90,7 +90,6 @@ trans = dict(keyword.keyword, **method.keyword) # ตัวแปรสำหร
 translations = trans
 def commandline():
     """thaipy, the python language in Traditional Thai
-
     usage: thaipy file.thpy
     """
     if len(sys.argv) != 2:
