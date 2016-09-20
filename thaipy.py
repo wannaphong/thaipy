@@ -26,7 +26,7 @@ class th_keyword(ThpyPlugin):
     python th keyword
     """
     title = "คำสำคัญ"
-    description = "Python คีย์เวิดร์"
+    description = "Python คำสำคัญ"
     keyword = {
           # logic
           u"และ":"and",
