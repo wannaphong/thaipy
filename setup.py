@@ -33,7 +33,7 @@ setup(
         'License :: OSI Approved :: Apache Software License',
         'Natural Language :: Thai',
         'Operating System :: OS Independent',
-        'Topic :: Software Development :: Code Generators'],
+        'Topic :: Software Development :: Code Generators',
         'Programming Language :: Python :: 3',
     ],
     test_suite='tests',
