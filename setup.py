@@ -6,6 +6,7 @@ from setuptools import find_packages
 requirements = [
     # TODO: put package requirements here
 ]
+readme="""Write Python 3 language in thai lang."""
 
 setup(
     name='thaipy',
