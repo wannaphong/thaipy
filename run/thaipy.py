@@ -94,7 +94,7 @@ def main(args=None):
     usage: thaipy file.thpy
     """
     if len(sys.argv) != 2:
-        print(commandline.__doc__)
+        print(main.__doc__)
         sys.exit(1)
 
     file_path = sys.argv[1]
