@@ -88,7 +88,7 @@ method = th_buildin_method()
 
 trans = dict(keyword.keyword, **method.keyword) # ตัวแปรสำหรับรวมคำสั่ง
 translations = trans
-def commandline():
+def main(args=None):
     """thaipy, the python language in Traditional Thai
 
     usage: thaipy file.thpy
@@ -111,4 +111,4 @@ def commandline():
     runpy._run_module_code(file.read(), mod_name="__main__") # รันโค้ด
 
 if __name__=="__main__":
-    commandline()
+    main()
