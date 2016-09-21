@@ -22,7 +22,7 @@ setup(
     install_requires=requirements,
     license="Apache Software License 2.0",
     zip_safe=False,
-    entry_points={'console_scripts': ['thaipy = thaipy.run.thaipy:main']},
+    entry_points={'console_scripts': ['thaipy = run.thaipy:main']},
     keywords='thaipy',
     classifiers=[
         'Development Status :: 3 - Alpha',
