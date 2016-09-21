@@ -22,7 +22,7 @@ setup(
     install_requires=requirements,
     license="Apache Software License 2.0",
     zip_safe=False,
-    scripts=['thaipy']
+    scripts=['thaipy'],
     entry_points = """
     [console_scripts]
     thaipy = thaipy:commandline
