@@ -16,7 +16,7 @@ setup(
     author="Wannaphong Phatthiyaphaibun",
     author_email='wannaphong@yahoo.com',
     url='https://github.com/wannaphongcom/thaipy',
-    packages=['thaipy'],
+    packages=['example','run'],
     package_data={'example':['love.thpy','test.thpy']},
     include_package_data=True,
     install_requires=requirements,
