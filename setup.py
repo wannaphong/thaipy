@@ -10,7 +10,7 @@ readme="""Write Python 3 language in thai lang."""
 
 setup(
     name='thaipy',
-    version='0.0.1',
+    version='0.0.2',
     description="Write Python 3 language in thai lang.",
     long_description=readme,# + '\n\n' + history,
     author="Wannaphong Phatthiyaphaibun",
@@ -22,7 +22,9 @@ setup(
     install_requires=requirements,
     license="Apache Software License 2.0",
     zip_safe=False,
-    entry_points={'console_scripts': ['thaipy = run.thaipy:main']},
+    entry_points={
+		'console_scripts': ['thaipy = run.thaipy:main']
+    },
     keywords='thaipy',
     classifiers=[
         'Development Status :: 3 - Alpha',
